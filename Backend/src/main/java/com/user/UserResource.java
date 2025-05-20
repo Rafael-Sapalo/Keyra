@@ -21,12 +21,12 @@ public class UserResource {
 
     @GET
     @Path("/me")
-    @Produces({ MediaType.TEXT_PLAIN, MediaType.APPLICATION_JSON })
+    @Produces({ MediaType.APPLICATION_JSON })
     public Response me() {
         UserEntity user = this.userService.registerUser("sam", "azerty", "test.email@outlook.com");
         if (user == null) {
             return Response.status(Response.Status.UNAUTHORIZED).entity("invalid user theres error").build();
         }
-        return Response.ok("me").build();
+        return Response.ok(user).build();
     }
 }
