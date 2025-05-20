@@ -8,7 +8,7 @@ import io.quarkus.runtime.annotations.QuarkusMain;
 public class MainResource {
     public  static class KeyraApp implements QuarkusApplication {
         @Override
-        public int run(String... args) throws Exception {
+        public int run(String... args) {
             System.out.println("🚀 Keyra is starting...");
             Quarkus.waitForExit();
             return 0;
