@@ -16,5 +16,4 @@ class MainResourceTest {
                 .statusCode(200)
                 .body(is("pong"));
     }
-
 }
