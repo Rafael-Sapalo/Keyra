@@ -8,18 +8,23 @@ on:
     types: [opened, synchronize, reopened]
 
 jobs:
-  use-db:
-    uses: ./.github/workflows/setup_postgresql.yml
-    with:
-      db_name: keyra
-      db_user: postgres
-      db_password: postgres
-      db_port: 5432
-      db_host: 127.0.0.1
   build:
     name: Build and analyze
     runs-on: ubuntu-latest
-    needs: [use-db]
+    services:
+      postgres:
+        image: postgres:15
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: keyra
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
 
     steps:
       - uses: actions/checkout@v4
@@ -45,6 +50,13 @@ jobs:
           path: ~/.m2
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
+
+      - name: Wait for PostgreSQL
+        run: |
+          until pg_isready -h 127.0.0.1 -p 5432; do
+            echo "Waiting for PostgreSQL to be ready..."
+            sleep 2
+          done
 
       - name: Build and analyze
         working-directory: Backend/
