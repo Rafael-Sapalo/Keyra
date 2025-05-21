@@ -1,4 +1,4 @@
-package com.auth;
+package com.auth.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
