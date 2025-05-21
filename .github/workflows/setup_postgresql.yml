@@ -1,0 +1,47 @@
+name: Setup PostgreSQL
+
+on:
+  workflow_call:
+    inputs:
+      db_name:
+        required: true
+        type: string
+      db_user:
+        required: true
+        type: string
+      db_password:
+        required: true
+        type: string
+      db_port:
+        required: true
+        type: string
+      db_host:
+        required: true
+        type: string
+
+jobs:
+  setup-db:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:17
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: keyra
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Wait for PostgreSQL
+        run: |
+          until pg_isready -h localhost -p 5432; do
+            echo "Waiting for PostgreSQL..."
+            sleep 2
+          done
