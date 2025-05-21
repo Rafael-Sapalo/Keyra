@@ -3,6 +3,7 @@ package com.auth;
 import com.auth.dto.LoginRequestDTO;
 import com.auth.dto.RefreshRequestDTO;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -12,6 +13,12 @@ import java.util.Map;
 @Path("/auth")
 @ApplicationScoped
 public class AuthResource {
+    private final AuthService authService;
+
+    @Inject
+    public AuthResource(AuthService authService) {
+        this.authService = authService;
+    }
 
     @POST
     @Path("/login")
