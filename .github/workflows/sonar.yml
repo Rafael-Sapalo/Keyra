@@ -15,7 +15,7 @@ jobs:
       db_user: postgres
       db_password: postgres
       db_port: 5432
-      db_host: localhost
+      db_host: 127.0.0.1
   build:
     name: Build and analyze
     runs-on: ubuntu-latest
