@@ -59,6 +59,15 @@ public class UserEntity extends PanacheEntityBase {
     @Column(name = "updated_at")
     public LocalDateTime updatedAt;
 
+
+    public UUID getId() { return this.id; }
+
+    public void setEmail(String email) { this.email = email; }
+    public String getEmail() { return email; }
+
+    public void setUsername(String username) { this.username = username; }
+    public String getUsername() { return username; }
+
     @PrePersist
     protected void prePersist() {
         if (id == null) id = UUID.randomUUID();

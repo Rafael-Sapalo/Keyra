@@ -20,7 +20,7 @@ public class UserService {
         if (this.userRepository.existsByEmail(email)) {
             return null;
         }
-        user.username = username;
+        user.setUsername(username);
         user.password = password;
         user.email = email;
         this.userRepository.save(user);
