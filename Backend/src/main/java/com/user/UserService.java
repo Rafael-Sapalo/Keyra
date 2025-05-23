@@ -1,5 +1,6 @@
 package com.user;
 
+import io.quarkus.elytron.security.common.BcryptUtil;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -15,15 +16,11 @@ public class UserService {
     }
 
     @Transactional
-    public UserEntity registerUser(String username, String password, String email) {
-        UserEntity user = new UserEntity();
+    public String registerUser(String username, String password, String email) {
         if (this.userRepository.existsByEmail(email)) {
             return null;
         }
-        user.setUsername(username);
-        user.password = password;
-        user.email = email;
-        this.userRepository.createUser();
-        return user;
+        this.userRepository.createUser(username, BcryptUtil.bcryptHash(password), email);
+        return "success";
     }
 }
