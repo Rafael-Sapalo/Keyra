@@ -13,7 +13,11 @@ public class UserRepository implements PanacheRepository<UserEntity> {
         return count("email", email) > 0;
     }
 
-    public void save(UserEntity user) {
+    public void createUser(String email, String hashedPassword, String username) {
+        UserEntity user = new UserEntity();
+        user.setEmail(email);
+        user.setUsername(username);
+        user.setPassword(hashedPassword);
         persist(user);
     }
 }

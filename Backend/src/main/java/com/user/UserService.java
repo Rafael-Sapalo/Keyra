@@ -23,7 +23,7 @@ public class UserService {
         user.setUsername(username);
         user.password = password;
         user.email = email;
-        this.userRepository.save(user);
+        this.userRepository.createUser();
         return user;
     }
 }
