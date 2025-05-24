@@ -6,10 +6,10 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import org.jboss.resteasy.reactive.RestPath;
 
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.Map;
+import java.util.UUID;
 
 @Path("/user")
 @ApplicationScoped
@@ -30,7 +30,17 @@ public class UserResource {
         if (userRegisterDTO == null) {
             return Response.status(Response.Status.BAD_REQUEST).entity(Map.of("error", "Invalid dto")).build();
         }
-        return Response.ok(userRegisterDTO).build();
+        String userToken = this.userService.registerUser(
+                userRegisterDTO.getUsername(),
+                userRegisterDTO.getPassword(),
+                userRegisterDTO.getEmail()
+        );
+
+        if (userToken == null) {
+            return Response.status(Response.Status.BAD_REQUEST).entity(Map.of("error", "Invalid user")).build();
+        }
+
+        return Response.ok(Map.of("access_token", userToken)).build();
     }
 
     @GET
@@ -38,5 +48,15 @@ public class UserResource {
     @Produces({ MediaType.APPLICATION_JSON })
     public Response me() {
         return Response.ok().entity("me").build();
+    }
+
+    @GET
+    @Path("/{userID}")
+    public Response getUser(@RestPath String userID) {
+        UserEntity user = this.userService.getUserInfo(UUID.fromString(userID));
+        if (user == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        return Response.ok().entity(user).build();
     }
 }

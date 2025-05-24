@@ -3,7 +3,10 @@ package com.user;
 import io.quarkus.elytron.security.common.BcryptUtil;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.persistence.PersistenceException;
 import jakarta.transaction.Transactional;
+
+import java.util.UUID;
 
 @ApplicationScoped
 public class UserService {
@@ -17,10 +20,17 @@ public class UserService {
 
     @Transactional
     public String registerUser(String username, String password, String email) {
-        if (this.userRepository.existsByEmail(email)) {
+        try {
+            String hashedPassword = BcryptUtil.bcryptHash(password);
+            this.userRepository.createUser(username, hashedPassword, email);
+            return hashedPassword;
+        } catch (PersistenceException e) {
             return null;
         }
-        this.userRepository.createUser(username, BcryptUtil.bcryptHash(password), email);
-        return "success";
+    }
+
+    @Transactional
+    public UserEntity getUserInfo(UUID userId) {
+        return this.userRepository.findById(userId);
     }
 }
