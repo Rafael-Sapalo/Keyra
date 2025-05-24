@@ -9,7 +9,7 @@ import static org.hamcrest.CoreMatchers.is;
 @QuarkusTest
 class MainResourceTest {
     @Test
-    void testHelloEndpoint() {
+    void testPingEndpoint() {
         given()
                 .when().get("/ping")
                 .then()
