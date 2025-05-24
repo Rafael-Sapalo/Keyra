@@ -52,7 +52,7 @@ public class UserResource {
 
     @GET
     @Path("/{userID}")
-    public Response getUser(@RestPath String userID) {
+    public Response getUser(@PathParam("userID") String userID) {
         UserEntity user = this.userService.getUserInfo(UUID.fromString(userID));
         if (user == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
