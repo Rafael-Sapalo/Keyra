@@ -67,4 +67,6 @@ jobs:
         working-directory: Backend/
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          DB_PASSWORD: keyra
+          DB_URL: jdbc:postgresql://localhost:5432/keyra
         run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=Rafael-Sapalo_Keyra
