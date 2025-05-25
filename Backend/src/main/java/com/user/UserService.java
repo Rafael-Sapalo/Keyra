@@ -1,8 +1,12 @@
 package com.user;
 
+import io.quarkus.elytron.security.common.BcryptUtil;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.persistence.PersistenceException;
 import jakarta.transaction.Transactional;
+
+import java.util.UUID;
 
 @ApplicationScoped
 public class UserService {
@@ -15,15 +19,18 @@ public class UserService {
     }
 
     @Transactional
-    public UserEntity registerUser(String username, String password, String email) {
-        UserEntity user = new UserEntity();
-        if (this.userRepository.existsByEmail(email)) {
+    public String registerUser(String username, String password, String email) {
+        try {
+            String hashedPassword = BcryptUtil.bcryptHash(password);
+            this.userRepository.createUser(username, hashedPassword, email);
+            return hashedPassword;
+        } catch (PersistenceException e) {
             return null;
         }
-        user.setUsername(username);
-        user.password = password;
-        user.email = email;
-        this.userRepository.save(user);
-        return user;
+    }
+
+    @Transactional
+    public UserEntity getUserInfo(UUID userId) {
+        return this.userRepository.findById(userId);
     }
 }
