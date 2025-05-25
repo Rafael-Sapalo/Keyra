@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - dev
   pull_request:
     types: [opened, synchronize, reopened]
     branches:
@@ -22,7 +23,8 @@ jobs:
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: keyra
+          DB_PASSWORD: keyra
+          DB_URL: jdbc:postgresql://127.0.0.1:5432/keyra
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
