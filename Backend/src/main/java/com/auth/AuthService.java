@@ -14,8 +14,7 @@ public class AuthService {
     }
 
     public String login(String email, String password) {
-        String token = this.jwtService.generateToken(email);
-        return "Welcome " + token + "!";
+        return this.jwtService.generateToken(email);
     }
     public String logout() {
         return "Goodbye!";

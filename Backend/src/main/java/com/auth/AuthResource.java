@@ -25,8 +25,12 @@ public class AuthResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response login(LoginRequestDTO loginRequestDTO) {
-        String userToken = this.authService.login(loginRequestDTO.email, loginRequestDTO.password);
-        return Response.ok().entity(Map.of("access_token", userToken)).build();
+        try {
+            String userToken = this.authService.login(loginRequestDTO.email, loginRequestDTO.password);
+            return Response.ok().entity(Map.of("access_token", userToken)).build();
+        } catch (Exception e) {
+            return Response.serverError().entity(e.getMessage()).build();
+        }
     }
 
     @POST
