@@ -3,8 +3,8 @@ package com.auth.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class LoginRequestDTO {
-    @JsonProperty("username")
-    public String username;
+    @JsonProperty("email")
+    public String email;
 
     @JsonProperty("password")
     public String password;
