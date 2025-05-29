@@ -27,9 +27,12 @@ public class AuthResource {
     public Response login(LoginRequestDTO loginRequestDTO) {
         try {
             String userToken = this.authService.login(loginRequestDTO.email, loginRequestDTO.password);
+            if (userToken == null) {
+                return Response.status(Response.Status.UNAUTHORIZED).build();
+            }
             return Response.ok().entity(Map.of("access_token", userToken)).build();
         } catch (Exception e) {
-            return Response.serverError().entity(e.getMessage()).build();
+            return Response.serverError().entity(e).build();
         }
     }
 
