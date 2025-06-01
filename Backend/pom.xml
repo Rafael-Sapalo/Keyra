@@ -83,10 +83,6 @@
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-elytron-security-jdbc</artifactId>
         </dependency>
-        <dependency>
-            <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-messaging-rabbitmq</artifactId>
-        </dependency>
     </dependencies>
 
     <build>
