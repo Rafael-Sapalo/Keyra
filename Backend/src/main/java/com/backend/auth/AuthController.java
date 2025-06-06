@@ -16,12 +16,19 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("auth")
 public class AuthController {
 
+    private final AuthService authService;
+
+    public AuthController(AuthService authService) {
+        this.authService = authService;
+    }
+
     @PostMapping(value = "login", produces = "application/json")
     public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest) {
         if (loginRequest == null || loginRequest.getEmail() == null || loginRequest.getPassword() == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
-        return ResponseEntity.ok(new LoginResponse("TOKEN"));
+        String token = this.authService.login(loginRequest);
+        return ResponseEntity.ok(new LoginResponse(token));
     }
 
     @PostMapping(value = "refresh", produces = "application/json")
