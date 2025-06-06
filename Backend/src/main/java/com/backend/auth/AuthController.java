@@ -2,6 +2,7 @@ package com.backend.auth;
 
 import com.backend.auth.dto.LoginRequest;
 import com.backend.auth.dto.LoginResponse;
+import com.backend.auth.dto.RefreshResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,8 +24,8 @@ public class AuthController {
     }
 
     @PostMapping(value = "refresh", produces = "application/json")
-    public ResponseEntity<?> refresh() {
-        return ResponseEntity.ok("refresh");
+    public ResponseEntity<RefreshResponse> refresh() {
+        return ResponseEntity.ok(new RefreshResponse("TOKEN"));
     }
 
     @PostMapping(value = "logout", produces = "application/json")
