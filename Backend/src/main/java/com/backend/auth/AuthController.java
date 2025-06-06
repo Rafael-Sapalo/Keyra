@@ -33,11 +33,11 @@ public class AuthController {
 
     @PostMapping(value = "refresh", produces = "application/json")
     public ResponseEntity<RefreshResponse> refresh() {
-        return ResponseEntity.ok(new RefreshResponse("TOKEN"));
+        return ResponseEntity.ok(new RefreshResponse(this.authService.refresh()));
     }
 
     @PostMapping(value = "logout", produces = "application/json")
     public ResponseEntity<LogoutResponse> logout() {
-        return ResponseEntity.ok(new LogoutResponse("TOKEN"));
+        return ResponseEntity.ok(new LogoutResponse(this.authService.logout()));
     }
 }
