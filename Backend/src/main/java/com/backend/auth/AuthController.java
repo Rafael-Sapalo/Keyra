@@ -2,6 +2,7 @@ package com.backend.auth;
 
 import com.backend.auth.dto.LoginRequest;
 import com.backend.auth.dto.LoginResponse;
+import com.backend.auth.dto.LogoutResponse;
 import com.backend.auth.dto.RefreshResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,7 +30,7 @@ public class AuthController {
     }
 
     @PostMapping(value = "logout", produces = "application/json")
-    public ResponseEntity<?> logout() {
-        return ResponseEntity.ok("logout");
+    public ResponseEntity<LogoutResponse> logout() {
+        return ResponseEntity.ok(new LogoutResponse("TOKEN"));
     }
 }
