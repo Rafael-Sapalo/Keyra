@@ -1,12 +1,11 @@
 package com.backend.auth.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
-@Getter @Setter @AllArgsConstructor
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class LoginResponse {
-    @JsonProperty("access_token")
     private String token;
 }
