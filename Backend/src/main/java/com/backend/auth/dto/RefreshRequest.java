@@ -9,9 +9,6 @@ import java.util.UUID;
 @Getter @Setter
 @AllArgsConstructor @NoArgsConstructor
 public class RefreshRequest {
-    @JsonProperty("user_id")
-    private UUID userID;
-
     @JsonProperty("access_token")
-    private String token;
+    private String accessToken;
 }
