@@ -24,7 +24,10 @@ public class AuthController {
         if (loginRequest == null || loginRequest.getEmail() == null || loginRequest.getPassword() == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
-        String token = this.authService.login(loginRequest);
+        LoginResponse token = this.authService.login(loginRequest);
+        if  (token == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new LoginResponse(null));
+        }
         return ResponseEntity.ok(new LoginResponse(token));
     }
 
