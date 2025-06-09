@@ -3,8 +3,6 @@ package com.backend.auth.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
-import java.util.UUID;
-
 @Data
 @Getter @Setter
 @AllArgsConstructor @NoArgsConstructor
