@@ -10,6 +10,7 @@ import jakarta.inject.Inject;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class AuthService implements IAuthService {
@@ -30,7 +31,7 @@ public class AuthService implements IAuthService {
         if (userData.isEmpty()) {
             throw new AuthServiceException("User not found");
         }
-        return new LoginResponse(userData.get().getPassword());
+        return new LoginResponse(this.jwtService.generateToken(String.valueOf(userData.get().getId()), userData.get().getEmail()));
     }
 
     @Override
