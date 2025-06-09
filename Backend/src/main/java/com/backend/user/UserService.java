@@ -9,6 +9,8 @@ import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class UserService {
 
@@ -37,5 +39,9 @@ public class UserService {
                 savedUser.getEmail(),
                 "User registered successfully"
         );
+    }
+
+    public Optional<UserEntity> me(String token) {
+        return this.userRepository.findByUsername(token);
     }
 }
