@@ -3,6 +3,8 @@ package com.backend.user;
 import com.backend.exception.ConflictException;
 import com.backend.user.dto.RegisterRequest;
 import com.backend.user.dto.RegisterResponse;
+import com.backend.user.entity.UserEntity;
+import com.backend.user.repository.UserRepository;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;

@@ -3,8 +3,8 @@ package com.backend.auth;
 import com.backend.auth.dto.LoginRequest;
 import com.backend.auth.dto.LoginResponse;
 import com.backend.exception.ResourceNotFoundException;
-import com.backend.user.UserEntity;
-import com.backend.user.UserRepository;
+import com.backend.user.entity.UserEntity;
+import com.backend.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
