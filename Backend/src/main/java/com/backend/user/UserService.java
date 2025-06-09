@@ -31,7 +31,7 @@ public class UserService {
         userEntity.setEmail(registerRequest.getEmail());
 
         UserEntity savedUser = this.userRepository.save(userEntity);
-        return  new RegisterResponse(
+        return new RegisterResponse(
                 savedUser.getId(),
                 savedUser.getUsername(),
                 savedUser.getEmail(),

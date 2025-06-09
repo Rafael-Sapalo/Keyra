@@ -25,7 +25,7 @@ public class AuthController {
 
     @PostMapping(value = "refresh", produces = "application/json")
     public ResponseEntity<String> refresh(@RequestBody RefreshRequest refreshRequest) {
-        return ResponseEntity.ok("done");
+        return ResponseEntity.ok(this.authService.refresh());
     }
 
     @PostMapping(value = "logout", produces = "application/json")

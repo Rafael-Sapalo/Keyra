@@ -3,8 +3,10 @@ package com.backend.auth;
 import com.backend.auth.dto.LoginRequest;
 import com.backend.auth.dto.LoginResponse;
 import com.backend.exception.ResourceNotFoundException;
+import com.backend.jwt.JwtService;
 import com.backend.user.entity.UserEntity;
 import com.backend.user.repository.UserRepository;
+import jakarta.inject.Inject;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -13,9 +15,12 @@ import java.util.Optional;
 public class AuthService implements IAuthService {
 
     private final UserRepository userRepository;
+    private final JwtService jwtService;
 
-    public AuthService(UserRepository userRepository) {
+    @Inject
+    public AuthService(UserRepository userRepository,  JwtService jwtService) {
         this.userRepository = userRepository;
+        this.jwtService = jwtService;
     }
 
     @Override
@@ -30,7 +35,7 @@ public class AuthService implements IAuthService {
 
     @Override
     public String refresh() {
-        return "TOKEN";
+        return this.jwtService.generateToken("azertyui", "txycuvbiun");
     }
 
     @Override
