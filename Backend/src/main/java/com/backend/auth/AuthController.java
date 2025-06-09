@@ -21,14 +21,7 @@ public class AuthController {
 
     @PostMapping(value = "login", produces = "application/json")
     public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest) {
-        if (loginRequest == null || loginRequest.getEmail() == null || loginRequest.getPassword() == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
-        LoginResponse token = this.authService.login(loginRequest);
-        if  (token == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new LoginResponse(null));
-        }
-        return ResponseEntity.ok(new LoginResponse(token));
+        return ResponseEntity.ok(this.authService.login(loginRequest));
     }
 
     @PostMapping(value = "refresh", produces = "application/json")
