@@ -7,16 +7,17 @@ import com.backend.jwt.JwtService;
 import com.backend.user.entity.UserEntity;
 import com.backend.user.repository.UserRepository;
 import jakarta.inject.Inject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-import java.util.UUID;
 
 @Service
 public class AuthService implements IAuthService {
 
     private final UserRepository userRepository;
     private final JwtService jwtService;
+    private static final Logger logger = LoggerFactory.getLogger(AuthService.class);
 
     @Inject
     public AuthService(UserRepository userRepository,  JwtService jwtService) {
@@ -26,12 +27,21 @@ public class AuthService implements IAuthService {
 
     @Override
     public LoginResponse login(LoginRequest loginRequest) {
-        Optional<UserEntity> userData = Optional.ofNullable(this.userRepository.findByEmail(loginRequest.getEmail())
-                .orElseThrow(() -> new ResourceNotFoundException("User with this email:" + loginRequest.getEmail() + "does not exist")));
-        if (userData.isEmpty()) {
-            throw new AuthServiceException("User not found");
+        String email = loginRequest.getEmail();
+        logger.info("Login Request: email={} timestamp={}", email, System.currentTimeMillis());
+        try {
+            UserEntity user = this.userRepository.findByEmail(email)
+                    .orElseThrow(() -> new ResourceNotFoundException("User dont exists"));
+            String token = this.jwtService.generateToken(String.valueOf(user.getId()), user.getEmail());
+            logger.info("Token generated: {}", token);
+            return new LoginResponse(token);
+        } catch (ResourceNotFoundException ex) {
+            logger.warn("Login Request: email={}, error is: {}", email, ex.getMessage());
+            throw ex;
+        } catch (Exception ex) {
+            logger.warn("Internal error Login Request: email={}, error is: {}", email, ex.getMessage());
+            throw new AuthServiceException("Login failed due to internal error");
         }
-        return new LoginResponse(this.jwtService.generateToken(String.valueOf(userData.get().getId()), userData.get().getEmail()));
     }
 
     @Override
