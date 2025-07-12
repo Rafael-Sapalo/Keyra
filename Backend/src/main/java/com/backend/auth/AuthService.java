@@ -37,9 +37,9 @@ public class AuthService implements IAuthService {
                 UserEntity user = this.userRepository.findByEmail(email)
                         .orElseThrow(() -> {
                             this.authMetrics.loginNotFound.increment();
-                            return new ResourceNotFoundException("User dont exists");
+                            return new ResourceNotFoundException("User does not exist");
                         });
-                String token = this.jwtService.generateToken(String.valueOf(user.getId()), user.getEmail());
+                String token = generateToken(user);
                 return new LoginResponse(token);
             } catch (ResourceNotFoundException ex) {
                 logger.warn("Login Request: email={}, error is: {}", email, ex.getMessage());
@@ -50,6 +50,10 @@ public class AuthService implements IAuthService {
                 throw new AuthServiceException("Login failed due to internal error");
             }
         });
+    }
+
+    private String generateToken(UserEntity user) {
+        return this.jwtService.generateToken(String.valueOf(user.getId()), user.getEmail());
     }
 
     @Override
