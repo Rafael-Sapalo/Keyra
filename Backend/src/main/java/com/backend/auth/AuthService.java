@@ -5,6 +5,8 @@ import com.backend.auth.dto.LoginResponse;
 import com.backend.auth.metrics.AuthMetrics;
 import com.backend.exception.ResourceNotFoundException;
 import com.backend.jwt.JwtService;
+import com.backend.jwt.TokenEntity;
+import com.backend.jwt.TokenRepository;
 import com.backend.user.entity.UserEntity;
 import com.backend.user.repository.UserRepository;
 import jakarta.inject.Inject;
@@ -12,20 +14,29 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
+
 
 @Service
 public class AuthService implements IAuthService {
 
     private final UserRepository userRepository;
     private final JwtService jwtService;
+    private final TokenRepository tokenRepository;
     private static final Logger logger = LoggerFactory.getLogger(AuthService.class);
     private final AuthMetrics authMetrics;
 
     @Inject
-    public AuthService(UserRepository userRepository,  JwtService jwtService,  AuthMetrics authMetrics) {
+    public AuthService(
+            UserRepository userRepository,
+            JwtService jwtService,
+            AuthMetrics authMetrics,
+            TokenRepository tokenRepository
+    ) {
         this.userRepository = userRepository;
         this.jwtService = jwtService;
         this.authMetrics = authMetrics;
+        this.tokenRepository = tokenRepository;
     }
 
     @Override
@@ -40,6 +51,12 @@ public class AuthService implements IAuthService {
                             return new ResourceNotFoundException("User does not exist");
                         });
                 String token = generateToken(user);
+                TokenEntity tokenEntity = new TokenEntity();
+                tokenEntity.setToken(token);
+                tokenEntity.setUserId(user.getId());
+                tokenEntity.setExpiresAt(Instant.now());
+                tokenRepository.save(tokenEntity);
+
                 return new LoginResponse(token);
             } catch (ResourceNotFoundException ex) {
                 logger.warn("Login Request: email={}, error is: {}", email, ex.getMessage());

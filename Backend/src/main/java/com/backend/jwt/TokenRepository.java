@@ -6,7 +6,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface TokenRepository extends JpaRepository<TokenEntity, UUID> {
-    Optional<TokenEntity> findByToken(String token);
+    Optional<TokenEntity> findByUserId(UUID userId);
 
     boolean existsByUserId(UUID userId);
 }

@@ -24,12 +24,11 @@ public class TokenEntity {
     @Column(nullable = false, unique = true)
     private String token;
 
-    @Column(nullable = false)
+    @Column(updatable = false)
     private Instant createdAt;
-    @Column(nullable = false)
+
     private Instant expiresAt;
 
-    @Column(nullable = false)
     private boolean revoked;
 
     @PrePersist
