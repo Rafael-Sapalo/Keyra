@@ -1,0 +1,12 @@
+CREATE TABLE token (
+   id UUID PRIMARY KEY,
+   user_id UUID NOT NULL UNIQUE,
+   token TEXT NOT NULL UNIQUE,
+   created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+   expires_at TIMESTAMPTZ NOT NULL,
+   revoked BOOLEAN DEFAULT FALSE,
+
+   CONSTRAINT fk_token_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+CREATE INDEX idx_token_user_id ON token(user_id);
