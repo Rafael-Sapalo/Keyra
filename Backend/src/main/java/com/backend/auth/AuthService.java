@@ -51,19 +51,20 @@ public class AuthService implements IAuthService {
                             return new ResourceNotFoundException("User does not exist");
                         });
                 String token = generateToken(user);
+
                 TokenEntity tokenEntity = new TokenEntity();
                 tokenEntity.setToken(token);
                 tokenEntity.setUserId(user.getId());
                 tokenEntity.setExpiresAt(Instant.now());
                 tokenRepository.save(tokenEntity);
-
+                     
                 return new LoginResponse(token);
             } catch (ResourceNotFoundException ex) {
-                logger.warn("Login Request: email={}, error is: {}", email, ex.getMessage());
+                logger.warn("Login Request: email={}, error is: {}", email, ex.getMessage(), ex);
                 throw new ResourceNotFoundException(ex.getMessage());
             } catch (Exception ex) {
                 this.authMetrics.loginError.increment();
-                logger.warn("Internal error Login Request: email={}, error is: {}", email, ex);
+                logger.warn("Internal error Login Request: email={}, error is: {}", email, ex.getMessage());
                 throw new AuthServiceException("Login failed due to internal error");
             }
         });
